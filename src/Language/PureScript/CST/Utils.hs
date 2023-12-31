@@ -353,3 +353,6 @@ isValidModuleNamespace = Text.null . snd . Text.span (\c -> c /= '_' && c /= '\'
 -- Related GHC issue: https://gitlab.haskell.org/ghc/ghc/issues/8167
 isLeftFatArrow :: Text -> Bool
 isLeftFatArrow str = str == "<=" || str == "⇐"
+
+isEntailedBy :: Text -> Bool
+isEntail str = str == "=|" || str == "⫤"

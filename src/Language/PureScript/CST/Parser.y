@@ -79,6 +79,7 @@ import Language.PureScript.PSString (PSString)
   '<-'               { SourceToken _ (TokLeftArrow _) }
   '->'               { SourceToken _ (TokRightArrow _) }
   '<='               { SourceToken _ (TokOperator [] sym) | isLeftFatArrow sym }
+  '=|'               { SourceToken _ (TokOperator [] sym) | isEntailedBy sym }
   '=>'               { SourceToken _ (TokRightFatArrow _) }
   ':'                { SourceToken _ (TokOperator [] ":") }
   '::'               { SourceToken _ (TokDoubleColon _) }
@@ -209,12 +210,14 @@ qualOp :: { QualifiedOpName }
   : OPERATOR {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
   | QUAL_OPERATOR {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
   | '<=' {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
+  | '=|' {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
   | '-' {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
   | ':' {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
 
 op :: { OpName }
   : OPERATOR {% opName <\$> toName N.OpName $1 }
   | '<=' {% opName <\$> toName N.OpName $1 }
+  | '=|' {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
   | '-' {% opName <\$> toName N.OpName $1 }
   | ':' {% opName <\$> toName N.OpName $1 }
 
@@ -720,6 +723,7 @@ classSignature :: { Labeled (Name (N.ProperName 'N.TypeName)) (Type ()) }
 
 classSuper :: { (OneOrDelimited (Constraint ()), SourceToken) }
   : constraints '<=' {%^ revert $ pure ($1, $2) }
+  | constraints '=|' {%^ revert $ pure ($1, $2) }
 
 classNameAndFundeps :: { (Name (N.ProperName 'N.ClassName), [TypeVarBinding ()], Maybe (SourceToken, Separated ClassFundep)) }
   : properName manyOrEmpty(typeVarBinding) fundeps {%^ revert $ pure (getProperName $1, $2, $3) }
