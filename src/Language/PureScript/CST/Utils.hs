@@ -355,4 +355,4 @@ isLeftFatArrow :: Text -> Bool
 isLeftFatArrow str = str == "<=" || str == "⇐"
 
 isEntailedBy :: Text -> Bool
-isEntail str = str == "=|" || str == "⫤"
+isEntailedBy str = str == "=|" || str == "⫤"

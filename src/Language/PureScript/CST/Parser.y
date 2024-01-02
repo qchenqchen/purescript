@@ -210,14 +210,12 @@ qualOp :: { QualifiedOpName }
   : OPERATOR {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
   | QUAL_OPERATOR {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
   | '<=' {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
-  | '=|' {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
   | '-' {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
   | ':' {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
 
 op :: { OpName }
   : OPERATOR {% opName <\$> toName N.OpName $1 }
   | '<=' {% opName <\$> toName N.OpName $1 }
-  | '=|' {% qualifiedOpName <\$> toQualifiedName N.OpName $1 }
   | '-' {% opName <\$> toName N.OpName $1 }
   | ':' {% opName <\$> toName N.OpName $1 }
 
